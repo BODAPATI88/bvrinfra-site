@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bvrinfra-portfolio
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/BODAPATI88/infra-homelab.git
+    targetRevision: main
+    path: apps/portfolio
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
+      - ServerSideApplyForce=true
