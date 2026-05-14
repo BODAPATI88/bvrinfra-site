@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bvrinfra-metrics-api
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: bvrinfra-portfolio
+  # Prune orphaned resources automatically
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    # Replace with your actual infra-homelab repo URL
+    repoURL: https://github.com/bvrinfra/infra-homelab.git
+    targetRevision: main
+    path: apps/metrics-api/k8s
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: bvrinfra
+
+  syncPolicy:
+    automated:
+      prune: true          # Remove resources deleted from git
+      selfHeal: true       # Re-sync if cluster state drifts
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - RespectIgnoreDifferences=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
+  # Ignore the image tag (managed by CI, not ArgoCD)
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/template/spec/containers/0/image

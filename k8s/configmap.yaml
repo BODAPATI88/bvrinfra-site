@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: metrics-api-config
+  namespace: bvrinfra
+  labels:
+    app: metrics-api
+    app.kubernetes.io/part-of: bvrinfra-portfolio
+data:
+  # Internal Prometheus URL — adjust if your kube-prometheus-stack uses a different service name.
+  # Common values:
+  #   kube-prometheus-stack:  http://prometheus-operated.monitoring.svc.cluster.local:9090
+  #   plain prometheus:        http://prometheus.monitoring.svc.cluster.local:9090
+  PROMETHEUS_URL: "http://prometheus-operated.monitoring.svc.cluster.local:9090"
+
+  # Only requests from this origin will be served by CORS.
+  ALLOWED_ORIGIN: "https://bvrinfra.in"
+
+  # How long (seconds) to cache a Prometheus response before re-querying.
+  CACHE_TTL_SECONDS: "30"
+
+  # Per-query timeout toward Prometheus.
+  PROMETHEUS_TIMEOUT_SECONDS: "8"
+
+  # Gunicorn workers (set to 2x vCPU cores; 2 is fine for a homelab).
+  PORT: "8080"

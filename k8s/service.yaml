@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: metrics-api
+  namespace: bvrinfra
+  labels:
+    app: metrics-api
+    app.kubernetes.io/part-of: bvrinfra-portfolio
+spec:
+  type: ClusterIP          # Internal only — Traefik ingress fronts this
+  selector:
+    app: metrics-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: http     # matches containerPort name in deployment
+      protocol: TCP

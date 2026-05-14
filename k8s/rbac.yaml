@@ -1,0 +1,35 @@
+# The metrics-api service does NOT need Kubernetes API access.
+# This RBAC grants only the bare minimum: nothing.
+# (Included as an explicit record that no extra permissions are required.)
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: metrics-api
+  namespace: bvrinfra
+  labels:
+    app: metrics-api
+automountServiceAccountToken: false   # no k8s API access needed
+
+---
+# ServiceMonitor so Prometheus can scrape the /health endpoint for uptime.
+# Requires kube-prometheus-stack (prometheus-operator).
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: metrics-api
+  namespace: bvrinfra
+  labels:
+    app: metrics-api
+    # This label must match your Prometheus operator's serviceMonitorSelector.
+    # kube-prometheus-stack default: release: kube-prometheus-stack
+    release: kube-prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app: metrics-api
+  endpoints:
+    - port: http
+      path: /health
+      interval: 60s
+      scheme: http

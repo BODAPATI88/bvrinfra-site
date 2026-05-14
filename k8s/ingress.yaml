@@ -1,0 +1,122 @@
+# ----------------------------------------------------------------
+# Traefik IngressRoute — exposes /api/metrics and /health ONLY.
+# All other paths are blocked by the route rules.
+# The portfolio frontend hits https://bvrinfra.in/metrics/api/metrics
+# which is reverse-proxied here via Cloudflare Tunnel → Traefik.
+# ----------------------------------------------------------------
+
+# -- Middleware: strip the /metrics prefix before forwarding to the service
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: metrics-strip-prefix
+  namespace: bvrinfra
+spec:
+  stripPrefix:
+    prefixes:
+      - /metrics
+
+---
+# -- Middleware: security headers
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: metrics-security-headers
+  namespace: bvrinfra
+spec:
+  headers:
+    customResponseHeaders:
+      X-Robots-Tag: "noindex, nofollow"
+      X-Content-Type-Options: "nosniff"
+      X-Frame-Options: "DENY"
+      Referrer-Policy: "no-referrer"
+    accessControlAllowOriginList:
+      - "https://bvrinfra.in"
+    accessControlMaxAge: 60
+
+---
+# -- Rate limit: 60 req/min per IP — sufficient for the 30s poll interval
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: metrics-rate-limit
+  namespace: bvrinfra
+spec:
+  rateLimit:
+    average: 60
+    burst: 10
+    period: 1m
+
+---
+# -- IngressRoute: HTTPS only
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: metrics-api
+  namespace: bvrinfra
+  labels:
+    app: metrics-api
+    app.kubernetes.io/part-of: bvrinfra-portfolio
+spec:
+  entryPoints:
+    - websecure                    # port 443
+  routes:
+    # Expose /metrics/api/metrics
+    - match: Host(`bvrinfra.in`) && PathPrefix(`/metrics/api/metrics`)
+      kind: Rule
+      middlewares:
+        - name: metrics-strip-prefix
+          namespace: bvrinfra
+        - name: metrics-security-headers
+          namespace: bvrinfra
+        - name: metrics-rate-limit
+          namespace: bvrinfra
+      services:
+        - name: metrics-api
+          port: 80
+
+    # Expose /metrics/health for uptime monitoring (optional)
+    - match: Host(`bvrinfra.in`) && PathPrefix(`/metrics/health`)
+      kind: Rule
+      middlewares:
+        - name: metrics-strip-prefix
+          namespace: bvrinfra
+        - name: metrics-security-headers
+          namespace: bvrinfra
+      services:
+        - name: metrics-api
+          port: 80
+
+  tls:
+    # Cloudflare Tunnel handles TLS termination; if you're using cert-manager:
+    # secretName: bvrinfra-tls
+    {}
+
+---
+# Alternative: standard Kubernetes Ingress (use this if you prefer)
+# Uncomment below and remove the IngressRoute above.
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: metrics-api
+#   namespace: bvrinfra
+#   annotations:
+#     traefik.ingress.kubernetes.io/router.entrypoints: websecure
+#     traefik.ingress.kubernetes.io/router.middlewares: >-
+#       bvrinfra-metrics-strip-prefix@kubernetescrd,
+#       bvrinfra-metrics-security-headers@kubernetescrd,
+#       bvrinfra-metrics-rate-limit@kubernetescrd
+# spec:
+#   ingressClassName: traefik
+#   rules:
+#     - host: bvrinfra.in
+#       http:
+#         paths:
+#           - path: /metrics/api/metrics
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: metrics-api
+#                 port:
+#                   number: 80
