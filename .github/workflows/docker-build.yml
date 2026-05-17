@@ -1,4 +1,4 @@
-name: Build and Push Image
+name: Build and Deploy
 
 on:
   push:
@@ -14,8 +14,11 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout
+      - name: Checkout App Repo
         uses: actions/checkout@v4
+
+      - name: Set SHA Tag
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
       - name: Login to GHCR
         uses: docker/login-action@v3
@@ -24,19 +27,36 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/bodapati88/bvrinfra-site
-          tags: |
-            type=raw,value=latest
-            type=sha
-
-      - name: Build and Push
+      - name: Build and Push Image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ghcr.io/bodapati88/bvrinfra-site:latest
+            ghcr.io/bodapati88/bvrinfra-site:sha-${{ env.SHORT_SHA }}
+
+      - name: Checkout Infra Repo
+        uses: actions/checkout@v4
+        with:
+          repository: BODAPATI88/infra-homelab
+          token: ${{ secrets.INFRA_REPO_TOKEN }}
+          path: infra-repo
+
+      - name: Update Deployment Image
+        run: |
+          sed -i 's|image: .*|image: ghcr.io/bodapati88/bvrinfra-site:sha-'${SHORT_SHA}'|' \
+          infra-repo/apps/bvrinfra-site/deployment.yaml
+
+      - name: Commit and Push Infra Changes
+        run: |
+          cd infra-repo
+
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add .
+
+          git commit -m "deploy bvrinfra-site sha-${SHORT_SHA}" || exit 0
+
+          git push
