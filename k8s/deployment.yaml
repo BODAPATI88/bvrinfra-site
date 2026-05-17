@@ -40,8 +40,8 @@ spec:
       containers:
         - name: metrics-api
           # Replace with your registry + image after pushing
-          image: ghcr.io/bvrinfra/metrics-api:latest
-          imagePullPolicy: Always
+          image: docker.io/library/metrics-api:local
+          imagePullPolicy: Never
 
           ports:
             - name: http
@@ -116,4 +116,6 @@ spec:
 
       # Allow the pod to resolve internal cluster DNS for Prometheus
       dnsPolicy: ClusterFirst
+      nodeSelector:
+        kubernetes.io/hostname: k8s-master
       restartPolicy: Always

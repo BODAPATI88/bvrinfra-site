@@ -700,7 +700,7 @@ footer p {
    Never exposes raw API responses or internal data in the DOM.
 =================================================================== */
 
-const METRICS_ENDPOINT  = '/metrics/api/metrics';
+const METRICS_ENDPOINT = 'https://metrics.bvrinfra.in/api/metrics';
 const POLL_INTERVAL_MS  = 30_000;   // 30 seconds
 const COUNTER_DURATION  = 1000;     // ms for animated counter
 
@@ -841,7 +841,7 @@ function setResourceBar(fillId, valueId, cardId, pct) {
   const fill  = document.getElementById(fillId);
   const val   = document.getElementById(valueId);
   const card  = document.getElementById(cardId);
-  if (!fill || !val) return;
+  if (!fill || val === null || val === undefined) return;
 
   if (card) card.classList.remove('loading');
 
@@ -900,7 +900,7 @@ function applyMetrics(data) {
   function setCell(cellId, valId, subId, sparkId, value, subText, histKey, suffix = '') {
     const cell = document.getElementById(cellId);
     const val  = document.getElementById(valId);
-    if (!cell || !val) return;
+    if (!cell || val === null || val === undefined) return;
     cell.classList.remove('loading');
 
     const prev  = parseFloat(val.dataset.prev ?? '0');

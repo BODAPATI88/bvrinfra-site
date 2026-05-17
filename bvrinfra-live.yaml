@@ -1,0 +1,293 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      argocd.argoproj.io/sync-wave: "1"
+      deployment.kubernetes.io/revision: "4"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{"argocd.argoproj.io/sync-wave":"1"},"labels":{"app":"metrics-api","app.kubernetes.io/part-of":"bvrinfra-portfolio"},"name":"metrics-api","namespace":"bvrinfra"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"metrics-api"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":0},"type":"RollingUpdate"},"template":{"metadata":{"annotations":{"checksum/config":"placeholder-updated-by-kustomize-or-helm"},"labels":{"app":"metrics-api","app.kubernetes.io/part-of":"bvrinfra-portfolio"}},"spec":{"containers":[{"envFrom":[{"configMapRef":{"name":"metrics-api-config"}}],"image":"docker.io/library/metrics-api:local","imagePullPolicy":"Never","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/health","port":"http"},"initialDelaySeconds":10,"periodSeconds":15,"timeoutSeconds":5},"name":"metrics-api","ports":[{"containerPort":8080,"name":"http","protocol":"TCP"}],"readinessProbe":{"failureThreshold":2,"httpGet":{"path":"/health","port":"http"},"initialDelaySeconds":5,"periodSeconds":10,"timeoutSeconds":5},"resources":{"limits":{"cpu":"200m","memory":"128Mi"},"requests":{"cpu":"50m","memory":"64Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true},"startupProbe":{"failureThreshold":10,"httpGet":{"path":"/api/ping","port":"http"},"periodSeconds":3},"volumeMounts":[{"mountPath":"/tmp","name":"tmp"}]}],"dnsPolicy":"ClusterFirst","nodeSelector":{"kubernetes.io/hostname":"k8s-master"},"restartPolicy":"Always","securityContext":{"fsGroup":1000,"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000},"volumes":[{"emptyDir":{},"name":"tmp"}]}}}}
+    creationTimestamp: "2026-05-16T21:18:14Z"
+    generation: 4
+    labels:
+      app: metrics-api
+      app.kubernetes.io/part-of: bvrinfra-portfolio
+    name: metrics-api
+    namespace: bvrinfra
+    resourceVersion: "550382"
+    uid: 87c22764-c97e-4caa-9649-636cb0cb70ee
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: metrics-api
+    strategy:
+      rollingUpdate:
+        maxSurge: 1
+        maxUnavailable: 0
+      type: RollingUpdate
+    template:
+      metadata:
+        annotations:
+          checksum/config: placeholder-updated-by-kustomize-or-helm
+          kubectl.kubernetes.io/restartedAt: "2026-05-16T23:33:03Z"
+        labels:
+          app: metrics-api
+          app.kubernetes.io/part-of: bvrinfra-portfolio
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: metrics-api-config
+          image: docker.io/library/metrics-api:local
+          imagePullPolicy: Never
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: metrics-api
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 2
+            httpGet:
+              path: /health
+              port: http
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+          startupProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /api/ping
+              port: http
+              scheme: HTTP
+            periodSeconds: 3
+            successThreshold: 1
+            timeoutSeconds: 1
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /tmp
+            name: tmp
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          kubernetes.io/hostname: k8s-master
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+          runAsUser: 1000
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - emptyDir: {}
+          name: tmp
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-05-16T21:20:15Z"
+      lastUpdateTime: "2026-05-16T21:20:15Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2026-05-16T21:18:14Z"
+      lastUpdateTime: "2026-05-16T23:33:16Z"
+      message: ReplicaSet "metrics-api-6f48f5fb64" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    observedGeneration: 4
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"metrics-api","app.kubernetes.io/part-of":"bvrinfra-portfolio"},"name":"metrics-api","namespace":"bvrinfra"},"spec":{"ports":[{"name":"http","port":80,"protocol":"TCP","targetPort":"http"}],"selector":{"app":"metrics-api"},"type":"ClusterIP"}}
+    creationTimestamp: "2026-05-16T21:05:13Z"
+    labels:
+      app: metrics-api
+      app.kubernetes.io/part-of: bvrinfra-portfolio
+    name: metrics-api
+    namespace: bvrinfra
+    resourceVersion: "539777"
+    uid: 3bb78077-2a43-4a1e-b722-bbae941dd397
+  spec:
+    clusterIP: 10.43.27.152
+    clusterIPs:
+    - 10.43.27.152
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+    selector:
+      app: metrics-api
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"traefik.ingress.kubernetes.io/router.entrypoints":"web","traefik.ingress.kubernetes.io/router.middlewares":"bvrinfra-strip-metrics-prefix@kubernetescrd"},"name":"metrics-api","namespace":"bvrinfra"},"spec":{"ingressClassName":"traefik","rules":[{"host":"bvrinfra.in","http":{"paths":[{"backend":{"service":{"name":"metrics-api","port":{"number":80}}},"path":"/metrics","pathType":"Prefix"}]}}]}}
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      traefik.ingress.kubernetes.io/router.middlewares: bvrinfra-strip-metrics-prefix@kubernetescrd
+    creationTimestamp: "2026-05-16T22:09:27Z"
+    generation: 1
+    name: metrics-api
+    namespace: bvrinfra
+    resourceVersion: "544228"
+    uid: 6a32b44f-7ed3-4d61-8f49-7cbc4c3b27bb
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: bvrinfra.in
+      http:
+        paths:
+        - backend:
+            service:
+              name: metrics-api
+              port:
+                number: 80
+          path: /metrics
+          pathType: Prefix
+  status:
+    loadBalancer: {}
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"traefik.ingress.kubernetes.io/router.entrypoints":"web"},"name":"metrics-api-host","namespace":"bvrinfra"},"spec":{"ingressClassName":"traefik","rules":[{"host":"metrics.bvrinfra.in","http":{"paths":[{"backend":{"service":{"name":"metrics-api","port":{"number":80}}},"path":"/","pathType":"Prefix"}]}}]}}
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+    creationTimestamp: "2026-05-16T22:12:30Z"
+    generation: 1
+    name: metrics-api-host
+    namespace: bvrinfra
+    resourceVersion: "544421"
+    uid: 37b909db-5cdd-4274-89ae-1ad5164326da
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: metrics.bvrinfra.in
+      http:
+        paths:
+        - backend:
+            service:
+              name: metrics-api
+              port:
+                number: 80
+          path: /
+          pathType: Prefix
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  data:
+    ca.crt: |
+      -----BEGIN CERTIFICATE-----
+      MIIBdjCCAR2gAwIBAgIBADAKBggqhkjOPQQDAjAjMSEwHwYDVQQDDBhrM3Mtc2Vy
+      dmVyLWNhQDE3NzExODk2MTIwHhcNMjYwMjE1MjEwNjUyWhcNMzYwMjEzMjEwNjUy
+      WjAjMSEwHwYDVQQDDBhrM3Mtc2VydmVyLWNhQDE3NzExODk2MTIwWTATBgcqhkjO
+      PQIBBggqhkjOPQMBBwNCAAQIAKAu59Z918FiTthwg2Vx1s5bug1n6keQmx9xsCYi
+      9yghNgrIV5t4W+H4KcgGk87CeNkF6xlanYb/SD7w/KdYo0IwQDAOBgNVHQ8BAf8E
+      BAMCAqQwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUdCuqnFAkOAoQ9da7hmnf
+      no27K90wCgYIKoZIzj0EAwIDRwAwRAIgCWFQX+359EBhueRxFzf0Hi3XcXG3dlDi
+      hT0TOerwvQ8CIGQdt2n+3ML/ZwCS5q+CMB6xf+g/efN0JG+0wEkv/py2
+      -----END CERTIFICATE-----
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubernetes.io/description: Contains a CA bundle that can be used to verify the
+        kube-apiserver when using internal endpoints such as the internal service
+        IP or kubernetes.default.svc. No other usage is guaranteed across distributions
+        of Kubernetes clusters.
+    creationTimestamp: "2026-05-16T20:53:40Z"
+    name: kube-root-ca.crt
+    namespace: bvrinfra
+    resourceVersion: "539048"
+    uid: 95bd75b9-632a-40e4-9d35-4192fc45c222
+- apiVersion: v1
+  data:
+    ALLOWED_ORIGIN: https://bvrinfra.in
+    CACHE_TTL_SECONDS: "30"
+    PORT: "8080"
+    PROMETHEUS_TIMEOUT_SECONDS: "8"
+    PROMETHEUS_URL: http://prometheus-operated.observability.svc.cluster.local:9090
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"ALLOWED_ORIGIN":"https://bvrinfra.in","CACHE_TTL_SECONDS":"30","PORT":"8080","PROMETHEUS_TIMEOUT_SECONDS":"8","PROMETHEUS_URL":"http://prometheus-operated.monitoring.svc.cluster.local:9090"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"app":"metrics-api","app.kubernetes.io/part-of":"bvrinfra-portfolio"},"name":"metrics-api-config","namespace":"bvrinfra"}}
+    creationTimestamp: "2026-05-16T21:05:13Z"
+    labels:
+      app: metrics-api
+      app.kubernetes.io/part-of: bvrinfra-portfolio
+    name: metrics-api-config
+    namespace: bvrinfra
+    resourceVersion: "541876"
+    uid: 4308afbe-cdb7-4cee-9063-c70e7775da0b
+- apiVersion: monitoring.coreos.com/v1
+  kind: ServiceMonitor
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"monitoring.coreos.com/v1","kind":"ServiceMonitor","metadata":{"annotations":{},"labels":{"app":"metrics-api","release":"kube-prometheus-stack"},"name":"metrics-api","namespace":"bvrinfra"},"spec":{"endpoints":[{"interval":"60s","path":"/health","port":"http","scheme":"http"}],"selector":{"matchLabels":{"app":"metrics-api"}}}}
+    creationTimestamp: "2026-05-16T21:05:13Z"
+    generation: 1
+    labels:
+      app: metrics-api
+      release: kube-prometheus-stack
+    name: metrics-api
+    namespace: bvrinfra
+    resourceVersion: "539775"
+    uid: 7ce81cdf-fd2c-49d6-ae20-8fcc30f7a89c
+  spec:
+    endpoints:
+    - interval: 60s
+      path: /health
+      port: http
+      scheme: http
+    selector:
+      matchLabels:
+        app: metrics-api
+kind: List
+metadata:
+  resourceVersion: ""
