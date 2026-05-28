@@ -324,8 +324,8 @@ function tickMetric(id, base, min, max, decimals = 0) {
   }, 2500);
 }
 
-tickMetric('cpuVal', 67, 45, 82);
-tickMetric('memVal', 43, 30, 58);
+//tickMetric('cpuVal', 67, 45, 82);
+//tickMetric('memVal', 43, 30, 58);
 tickMetric('netVal', 1.2, 0.8, 1.8, 1);
 tickMetric('restartVal', 3, 1, 8);
 
@@ -741,7 +741,53 @@ document.querySelectorAll('.metric-card').forEach(card => {
     card.style.background = '';
   });
 });
+const API_URL =
+  "https://api.bvrinfra.in/api/v1/cluster-health";
 
+async function loadLiveMetrics() {
+
+  try {
+
+    const response =
+      await fetch(API_URL);
+
+    const data =
+      await response.json();
+
+    const cpu =
+      parseFloat(
+        data.cpu?.[0]?.value?.[1] || 0
+      ).toFixed(1);
+
+    const memory =
+      parseFloat(
+        data.memory?.[0]?.value?.[1] || 0
+      ).toFixed(1);
+
+    const cpuEl =
+      document.getElementById("cpuVal");
+
+    const memEl =
+      document.getElementById("memVal");
+
+    if (cpuEl) cpuEl.textContent = cpu;
+    if (memEl) memEl.textContent = memory;
+
+  } catch (err) {
+
+    console.error(
+      "Metrics API Error:",
+      err
+    );
+  }
+}
+
+loadLiveMetrics();
+
+setInterval(
+  loadLiveMetrics,
+  15000
+);
 
 /* ═══════════════════════════════════════════════
    14. CONSOLE EASTER EGG
