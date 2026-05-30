@@ -3,7 +3,6 @@
    Theme: Industrial Terminal Dark
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap');
 
 /* ── Variables ─────────────────────────────────────────────── */
 :root {
@@ -23,8 +22,8 @@
   --text-0:     #e8f4f8;
   --text-1:     #8faec2;
   --text-2:     #4a6a80;
-  --mono:       'JetBrains Mono', monospace;
-  --sans:       'Syne', sans-serif;
+  --mono:       monospace;
+  --sans:       system-ui, sans-serif;
   --radius:     4px;
   --radius-lg:  8px;
   --transition: 200ms ease;
