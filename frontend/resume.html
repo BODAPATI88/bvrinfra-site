@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume — BVRINFRA · B.V. Ravi Kishore</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    .page-hero {
+      padding: 72px 0 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Resume Layout ───────────────────────────────────────── */
+    .resume-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 48px;
+      align-items: start;
+      margin-top: 48px;
+    }
+
+    /* ── Sidebar ─────────────────────────────────────────────── */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: sticky;
+      top: 88px;
+    }
+
+    .profile-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      text-align: center;
+    }
+
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: #000;
+      margin: 0 auto 16px;
+      border: 3px solid var(--border2);
+    }
+
+    .profile-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .profile-title {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .profile-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: left;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .contact-item .icon {
+      width: 20px;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    /* ── Sidebar Panels ──────────────────────────────────────── */
+    .side-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+    }
+
+    .side-panel-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skill-bar-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .skill-bar-item {}
+
+    .skill-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .skill-bar-track {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      transition: width 1s ease;
+    }
+
+    .cert-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cert-item:last-child { border-bottom: none; }
+
+    .cert-icon { font-size: 20px; flex-shrink: 0; }
+    .cert-name { font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+    .cert-issuer { font-size: 11px; color: var(--text-dim); }
+
+    /* ── Main Content ────────────────────────────────────────── */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── Timeline ────────────────────────────────────────────── */
+    .timeline-section {
+      margin-bottom: 56px;
+    }
+
+    .timeline-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .timeline-icon {
+      font-size: 20px;
+    }
+
+    .timeline-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 12px;
+      bottom: 12px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--cyan), var(--border) 80%);
+    }
+
+    .timeline-entry {
+      position: relative;
+      padding: 0 0 40px 28px;
+    }
+
+    .timeline-entry:last-child { padding-bottom: 0; }
+
+    .timeline-node {
+      position: absolute;
+      left: -20px;
+      top: 6px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--cyan);
+      background: var(--bg);
+      z-index: 2;
+      transition: all .3s;
+    }
+
+    .timeline-entry:hover .timeline-node {
+      background: var(--cyan);
+      box-shadow: var(--glow-cyan);
+    }
+
+    .timeline-date {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 6px;
+    }
+
+    .timeline-role {
+      font-family: 'Syne', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .timeline-company {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .timeline-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .timeline-bullets li {
+      font-size: 13px;
+      color: var(--text-muted);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .timeline-bullets li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--cyan);
+      font-size: 10px;
+      top: 3px;
+    }
+
+    /* ── Skills Grid ─────────────────────────────────────────── */
+    .competencies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .competency-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      transition: all .2s;
+    }
+
+    .competency-card:hover {
+      border-color: var(--border2);
+    }
+
+    .comp-category {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 10px;
+    }
+
+    .comp-items {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ── Download CTA ────────────────────────────────────────── */
+    .download-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 48px;
+      padding: 24px 28px;
+      background: linear-gradient(135deg, rgba(0,229,255,.07), rgba(0,255,136,.07));
+      border: 1px solid rgba(0,229,255,.2);
+      border-radius: var(--radius-lg);
+    }
+
+    @media (max-width: 900px) {
+      .resume-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo">BVR<span>INFRA</span></a>
+    <button class="nav-toggle" id="navToggle">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="resume.html" class="active">Resume</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-status">Cluster: Healthy</div>
+  </div>
+</nav>
+
+<!-- ── Page Hero ──────────────────────────────────────────────── -->
+<div class="page-hero">
+  <div class="container">
+    <div class="section-label">Career Profile</div>
+    <h1 class="section-title">Resume</h1>
+    <p class="section-desc">
+      8+ years of experience in IT infrastructure, cloud, and platform engineering —
+      from enterprise Windows administration to Kubernetes-native GitOps platforms.
+    </p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="resume-layout">
+
+      <!-- ── Sidebar ─────────────────────────────────────────── -->
+      <aside class="sidebar">
+
+        <div class="profile-card">
+          <div class="profile-avatar">RK</div>
+          <div class="profile-name">B.V. Ravi Kishore</div>
+          <div class="profile-title">Senior System Engineer</div>
+          <div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:12px">
+            <span class="badge badge-cyan" style="font-size:10px">8+ Yrs Exp</span>
+            <span class="badge badge-green" style="font-size:10px">Platform Eng</span>
+          </div>
+          <div class="profile-contact">
+            <div class="contact-item">
+              <span class="icon">📧</span>
+              <span>bvr.kishore@outlook.com</span>
+            </div>
+            <div class="contact-item">
+              <span class="icon">📍</span>
+              <span>Hyderabad, India</span>
+            </div>
+            <div class="contact-item">
+              <span class="icon">📞</span>
+              <span>(+91) 9599229585</span>
+            </div>
+            <div class="contact-item">
+              <span class="icon">🔗</span>
+              <a href="https://linkedin.com/in/ravikishore" target="_blank" style="color:var(--cyan)">linkedin.com/in/ravikishore</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Core Skills -->
+        <div class="side-panel">
+          <div class="side-panel-title">Core Skills</div>
+          <div class="skill-bar-list">
+            <div class="skill-bar-item">
+              <div class="skill-bar-label"><span>Kubernetes / K8s</span><span style="color:var(--cyan)">95%</span></div>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:95%"></div></div>
+            </div>
+            <div class="skill-bar-item">
+              <div class="skill-bar-label"><span>Cloud (AWS/Azure/GCP)</span><span style="color:var(--cyan)">88%</span></div>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:88%"></div></div>
+            </div>
+            <div class="skill-bar-item">
+              <div class="skill-bar-label"><span>Windows Server</span><span style="color:var(--cyan)">92%</span></div>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:92%"></div></div>
+            </div>
+            <div class="skill-bar-item">
+              <div class="skill-bar-label"><span>VMware vSphere</span><span style="color:var(--cyan)">85%</span></div>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:85%"></div></div>
+            </div>
+            <div class="skill-bar-item">
+              <div class="skill-bar-label"><span>PowerShell / Python</span><span style="color:var(--cyan)">87%</span></div>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:87%"></div></div>
+            </div>
+            <div class="skill-bar-item">
+              <div class="skill-bar-label"><span>Terraform</span><span style="color:var(--cyan)">80%</span></div>
+              <div class="skill-bar-track"><div class="skill-bar-fill" style="width:80%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="side-panel">
+          <div class="side-panel-title">Certifications</div>
+          <div class="cert-item">
+            <div class="cert-icon">🏆</div>
+            <div>
+              <div class="cert-name">Windows Server Hybrid Admin</div>
+              <div class="cert-issuer">Microsoft · AZ-800 &amp; AZ-801</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="side-panel">
+          <div class="side-panel-title">Education</div>
+          <div class="cert-item">
+            <div class="cert-icon">🎓</div>
+            <div>
+              <div class="cert-name">B.Tech — Electronics &amp; Communication Eng.</div>
+              <div class="cert-issuer">JNTU Hyderabad</div>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- ── Main Content ──────────────────────────────────── -->
+      <main class="main-content">
+
+        <!-- Professional Summary -->
+        <div class="timeline-section">
+          <div class="timeline-header">
+            <span class="timeline-icon">👤</span>
+            <span class="timeline-title">Professional Summary</span>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 28px;border-left:3px solid var(--cyan)">
+            <p style="font-size:14px;line-height:1.85;color:var(--text-muted)">
+              Results-driven System Administrator and Platform Engineer with <strong style="color:#fff">8+ years</strong> of
+              experience in IT infrastructure, cloud, and Windows administration. Proficient in managing
+              on-premises and cloud-based systems across <strong style="color:#fff">AWS, Azure, and GCP</strong>. Skilled in
+              <strong style="color:#fff">VMware vSphere, Active Directory, PowerShell automation</strong>, and security compliance.
+              Currently building and operating a production-grade Kubernetes platform (BVRINFRA) with
+              full GitOps, observability, and automated backup. Contributing to enterprise-level IT
+              operations at <strong style="color:#fff">Astreya</strong>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Experience -->
+        <div class="timeline-section">
+          <div class="timeline-header">
+            <span class="timeline-icon">💼</span>
+            <span class="timeline-title">Professional Experience</span>
+          </div>
+          <div class="timeline">
+
+            <div class="timeline-entry">
+              <div class="timeline-node"></div>
+              <div class="timeline-date">June 2025 — Present</div>
+              <div class="timeline-role">System Administrator</div>
+              <div class="timeline-company">Astreya · Enterprise IT Infrastructure</div>
+              <ul class="timeline-bullets">
+                <li>Managing enterprise IT infrastructure for global clients with focus on system uptime and compliance.</li>
+                <li>Administering hybrid environments (Windows &amp; Linux) across on-premises and cloud.</li>
+                <li>Implementing eDiscovery and data management solutions ensuring data integrity and regulatory compliance.</li>
+                <li>Automating routine administrative tasks using PowerShell and Python, reducing toil by 30%+.</li>
+                <li>Collaborating with cross-functional teams for system upgrades and incident response.</li>
+              </ul>
+            </div>
+
+            <div class="timeline-entry">
+              <div class="timeline-node"></div>
+              <div class="timeline-date">July 2023 — May 2025</div>
+              <div class="timeline-role">Senior System Engineer</div>
+              <div class="timeline-company">Artha Data Solutions · Hybrid Cloud Infrastructure</div>
+              <ul class="timeline-bullets">
+                <li>Led hybrid cloud infrastructure projects to improve scalability and security across enterprise clients.</li>
+                <li>Implemented automated monitoring dashboards in Power BI integrating with Tanium for real-time visibility.</li>
+                <li>Managed domain and network configurations ensuring 99.9% availability.</li>
+                <li>Ensured patch compliance and reduced unplanned downtime through proactive issue resolution.</li>
+              </ul>
+            </div>
+
+            <div class="timeline-entry">
+              <div class="timeline-node"></div>
+              <div class="timeline-date">March 2023 — April 2023</div>
+              <div class="timeline-role">IT Analyst C2</div>
+              <div class="timeline-company">Tata Consultancy Services · Global Operations</div>
+              <ul class="timeline-bullets">
+                <li>Automated system onboarding and patch management workflows for global infrastructure at scale.</li>
+                <li>Developed PowerShell &amp; Python scripts improving operational efficiency by 30%.</li>
+              </ul>
+            </div>
+
+            <div class="timeline-entry">
+              <div class="timeline-node"></div>
+              <div class="timeline-date">April 2022 — March 2023</div>
+              <div class="timeline-role">Windows Administrator</div>
+              <div class="timeline-company">DataCore Technologies Pvt Ltd</div>
+              <ul class="timeline-bullets">
+                <li>Administered Windows Server 2016/2019 infrastructure and implemented DR strategies reducing downtime by 40%.</li>
+                <li>Managed Active Directory, Group Policy, and system performance tuning across 200+ servers.</li>
+              </ul>
+            </div>
+
+            <div class="timeline-entry">
+              <div class="timeline-node"></div>
+              <div class="timeline-date">July 2021 — Feb 2022</div>
+              <div class="timeline-role">Senior System Engineer</div>
+              <div class="timeline-company">Kanthwal Services</div>
+              <ul class="timeline-bullets">
+                <li>Monitored and optimized VMware vSphere/ESXi environments maintaining 99.9% platform uptime.</li>
+                <li>Improved incident response efficiency by 25% through runbook automation and on-call process refinement.</li>
+              </ul>
+            </div>
+
+            <div class="timeline-entry">
+              <div class="timeline-node"></div>
+              <div class="timeline-date">Sep 2020 — June 2021</div>
+              <div class="timeline-role">Senior System Engineer</div>
+              <div class="timeline-company">Quess Corp Ltd</div>
+              <ul class="timeline-bullets">
+                <li>Managed batch scheduling, deployments, and system maintenance for enterprise clients.</li>
+                <li>Automated repetitive administrative tasks reducing team workload by 35%.</li>
+              </ul>
+            </div>
+
+            <div class="timeline-entry">
+              <div class="timeline-node" style="border-color:var(--text-dim)"></div>
+              <div class="timeline-date">June 2013 — Feb 2017</div>
+              <div class="timeline-role">System Engineer</div>
+              <div class="timeline-company">Magna InfoTech</div>
+              <ul class="timeline-bullets">
+                <li>Delivered 24/7 production support with focus on minimising downtime incidents.</li>
+                <li>Handled server log analysis, system incident triage, and root cause analysis documentation.</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Core Competencies -->
+        <div class="timeline-section">
+          <div class="timeline-header">
+            <span class="timeline-icon">🧠</span>
+            <span class="timeline-title">Core Competencies</span>
+          </div>
+          <div class="competencies-grid">
+            <div class="competency-card">
+              <div class="comp-category">Cloud Platforms</div>
+              <div class="comp-items">AWS (EC2, RDS, VPC, IAM, Load Balancing) · Azure · GCP · Hybrid Cloud</div>
+            </div>
+            <div class="competency-card">
+              <div class="comp-category">System Administration</div>
+              <div class="comp-items">Windows Server 2016/2019 · RHEL · SUSE Linux · Active Directory · DNS · DHCP</div>
+            </div>
+            <div class="competency-card">
+              <div class="comp-category">Virtualisation &amp; Containers</div>
+              <div class="comp-items">VMware vSphere/ESXi 6.x · Proxmox · Kubernetes (K3s) · Docker · containerd</div>
+            </div>
+            <div class="competency-card">
+              <div class="comp-category">Automation &amp; IaC</div>
+              <div class="comp-items">PowerShell · Python · Bash · Terraform · ArgoCD · Kustomize · Helm</div>
+            </div>
+            <div class="competency-card">
+              <div class="comp-category">Monitoring &amp; Observability</div>
+              <div class="comp-items">Prometheus · Grafana · Loki · Tanium · Nagios · Splunk · Power BI</div>
+            </div>
+            <div class="competency-card">
+              <div class="comp-category">Security &amp; Compliance</div>
+              <div class="comp-items">System Hardening · Patch Management · IAM · ITIL · Incident Management · ServiceNow</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Download CTA -->
+        <div class="download-cta">
+          <span style="font-size:28px">📄</span>
+          <div style="flex:1">
+            <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:4px">Download Full CV</div>
+            <div style="font-size:12px;color:var(--text-muted)">Complete resume with all experience, skills, and certifications</div>
+          </div>
+          <a href="contact.html" class="btn btn-outline" style="flex-shrink:0">Get in Touch →</a>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-copy">© 2025 B.V. Ravi Kishore · BVRINFRA Platform</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="architecture.html">Architecture</a>
+      <a href="projects.html">Projects</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('navToggle').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+</script>
+</body>
+</html>

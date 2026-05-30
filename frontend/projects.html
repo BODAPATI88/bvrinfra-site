@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — BVRINFRA</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    .page-hero {
+      padding: 72px 0 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Projects Grid ───────────────────────────────────────── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 28px;
+      margin-top: 48px;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: all .3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card:hover {
+      border-color: var(--border2);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,.4);
+    }
+
+    .project-header {
+      padding: 28px 28px 20px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .project-accent {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    .project-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .project-icon {
+      font-size: 36px;
+      line-height: 1;
+    }
+
+    .project-status {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .status-live {
+      background: rgba(0,255,136,.1);
+      color: var(--green);
+      border: 1px solid rgba(0,255,136,.25);
+    }
+
+    .status-dev {
+      background: rgba(255,179,0,.1);
+      color: var(--amber);
+      border: 1px solid rgba(255,179,0,.25);
+    }
+
+    .project-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .project-tagline {
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .project-body {
+      padding: 20px 28px;
+      flex: 1;
+    }
+
+    .project-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .project-section-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+      margin-top: 20px;
+    }
+
+    .project-section-title:first-of-type { margin-top: 0; }
+
+    .highlights-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .highlights-list li {
+      font-size: 12px;
+      color: var(--text-muted);
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .highlights-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--cyan);
+      font-size: 11px;
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tech-pill {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: rgba(0,229,255,.07);
+      color: var(--cyan-dim);
+      border: 1px solid rgba(0,229,255,.15);
+      letter-spacing: .04em;
+    }
+
+    .project-footer {
+      padding: 16px 28px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+    }
+
+    .project-link {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 0;
+      border-radius: var(--radius);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: all .2s;
+    }
+
+    .link-primary {
+      background: rgba(0,229,255,.1);
+      color: var(--cyan);
+      border: 1px solid rgba(0,229,255,.2);
+    }
+    .link-primary:hover {
+      background: rgba(0,229,255,.18);
+      color: #fff;
+      border-color: var(--cyan);
+    }
+
+    .link-secondary {
+      background: rgba(255,255,255,.04);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .link-secondary:hover {
+      background: rgba(255,255,255,.08);
+      color: #fff;
+    }
+
+    /* ── Featured Badge ─────────────────────────────────────── */
+    .featured-banner {
+      background: linear-gradient(135deg, rgba(0,229,255,.08), rgba(0,255,136,.08));
+      border: 1px solid rgba(0,229,255,.2);
+      border-radius: var(--radius-lg);
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .featured-banner span:first-child { font-size: 24px; }
+    .featured-text { font-size: 13px; color: var(--text-muted); }
+    .featured-text strong { color: #fff; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo">BVR<span>INFRA</span></a>
+    <button class="nav-toggle" id="navToggle">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="architecture.html">Architecture</a></li>
+      <li><a href="projects.html" class="active">Projects</a></li>
+      <li><a href="resume.html">Resume</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-status">Cluster: Healthy</div>
+  </div>
+</nav>
+
+<!-- ── Page Hero ──────────────────────────────────────────────── -->
+<div class="page-hero">
+  <div class="container">
+    <div class="section-label">Work</div>
+    <h1 class="section-title">Projects</h1>
+    <p class="section-desc">
+      A collection of infrastructure engineering and platform projects — each designed
+      with production-grade reliability, observability, and GitOps automation in mind.
+    </p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+
+    <div class="featured-banner">
+      <span>🌟</span>
+      <div class="featured-text">
+        All platform projects are <strong>live and running</strong> on the bvrinfra.in Kubernetes cluster.
+        Each is deployed via ArgoCD and continuously monitored with Prometheus + Grafana.
+      </div>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- Project 1: GitOps Platform -->
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-accent" style="background: linear-gradient(90deg, var(--cyan), var(--green))"></div>
+          <div class="project-meta">
+            <div class="project-icon">🐙</div>
+            <span class="project-status status-live">● Live</span>
+          </div>
+          <div class="project-name">GitOps Platform</div>
+          <div class="project-tagline">ArgoCD · Declarative Infrastructure</div>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">
+            A fully declarative Kubernetes platform managed entirely through Git. Every
+            resource — namespaces, deployments, ConfigMaps, RBAC, ingress rules — lives
+            in a GitHub repository. ArgoCD continuously reconciles the cluster against
+            this single source of truth with automatic drift detection and self-healing.
+          </p>
+
+          <div class="project-section-title">Architecture Highlights</div>
+          <ul class="highlights-list">
+            <li>App of Apps pattern organises platform components hierarchically</li>
+            <li>Auto-sync with self-heal prevents manual drift from accumulating</li>
+            <li>Webhook-triggered sync for sub-30-second deployment latency</li>
+            <li>Git history provides full audit trail and one-command rollback</li>
+            <li>Multi-environment targeting via Kustomize overlays</li>
+          </ul>
+
+          <div class="project-section-title">Technologies</div>
+          <div class="tech-stack">
+            <span class="tech-pill">ArgoCD</span>
+            <span class="tech-pill">GitHub</span>
+            <span class="tech-pill">Kustomize</span>
+            <span class="tech-pill">K3s</span>
+            <span class="tech-pill">Helm</span>
+            <span class="tech-pill">YAML</span>
+          </div>
+        </div>
+        <div class="project-footer">
+          <a href="https://argocd.bvrinfra.in" target="_blank" class="project-link link-primary">↗ Live App</a>
+          <a href="architecture.html" class="project-link link-secondary">Docs</a>
+        </div>
+      </div>
+
+      <!-- Project 2: Metrics API -->
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-accent" style="background: linear-gradient(90deg, var(--amber), #ff6b35)"></div>
+          <div class="project-meta">
+            <div class="project-icon">📡</div>
+            <span class="project-status status-live">● Live</span>
+          </div>
+          <div class="project-name">Metrics API</div>
+          <div class="project-tagline">Real-time Cluster Telemetry Endpoint</div>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">
+            A lightweight REST API that exposes real-time cluster health metrics —
+            CPU usage, memory utilisation, running pod count, disk pressure, and uptime —
+            in a clean JSON format. Powers the live dashboard on this portfolio site and
+            enables external monitoring integrations.
+          </p>
+
+          <div class="project-section-title">Architecture Highlights</div>
+          <ul class="highlights-list">
+            <li>FastAPI / Python backend running as a Kubernetes deployment</li>
+            <li>Queries Prometheus federation endpoint for real-time TSDB data</li>
+            <li>Exposed via Traefik ingress at platform.bvrinfra.in/api/metrics</li>
+            <li>CORS-enabled for cross-origin access from portfolio frontend</li>
+            <li>Rate limiting and read-only RBAC for public safety</li>
+          </ul>
+
+          <div class="project-section-title">Technologies</div>
+          <div class="tech-stack">
+            <span class="tech-pill">Python</span>
+            <span class="tech-pill">FastAPI</span>
+            <span class="tech-pill">Prometheus</span>
+            <span class="tech-pill">Kubernetes</span>
+            <span class="tech-pill">Traefik</span>
+            <span class="tech-pill">REST</span>
+          </div>
+        </div>
+        <div class="project-footer">
+          <a href="https://platform.bvrinfra.in/api/metrics" target="_blank" class="project-link link-primary">↗ API Endpoint</a>
+          <a href="index.html#metrics-section" class="project-link link-secondary">Dashboard</a>
+        </div>
+      </div>
+
+      <!-- Project 3: Kubernetes Homelab -->
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-accent" style="background: linear-gradient(90deg, #6366f1, var(--cyan))"></div>
+          <div class="project-meta">
+            <div class="project-icon">🖥️</div>
+            <span class="project-status status-live">● Live</span>
+          </div>
+          <div class="project-name">Kubernetes Homelab</div>
+          <div class="project-tagline">Proxmox · K3s · Production Patterns</div>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">
+            A 3-node Kubernetes cluster running on Proxmox VMs that mirrors enterprise
+            production patterns. The cluster runs a dedicated control-plane node, a
+            workload node for applications, and a separate observability node — isolating
+            monitoring resource consumption from application workloads.
+          </p>
+
+          <div class="project-section-title">Architecture Highlights</div>
+          <ul class="highlights-list">
+            <li>3 VMs on Proxmox: master (control plane), worker1 (apps), worker2 (obs)</li>
+            <li>MetalLB provides bare-metal load balancer IP allocation</li>
+            <li>Cloudflare Tunnel for zero-trust external access — no open ports</li>
+            <li>Node taints and tolerations separate observability from app workloads</li>
+            <li>Persistent volumes backed by local-path provisioner with encryption</li>
+          </ul>
+
+          <div class="project-section-title">Technologies</div>
+          <div class="tech-stack">
+            <span class="tech-pill">Proxmox</span>
+            <span class="tech-pill">K3s</span>
+            <span class="tech-pill">MetalLB</span>
+            <span class="tech-pill">Cloudflare</span>
+            <span class="tech-pill">Flannel</span>
+            <span class="tech-pill">containerd</span>
+          </div>
+        </div>
+        <div class="project-footer">
+          <a href="https://proxmox.bvrinfra.in" target="_blank" class="project-link link-primary">↗ Proxmox</a>
+          <a href="https://k8s.bvrinfra.in" target="_blank" class="project-link link-secondary">K8s UI</a>
+        </div>
+      </div>
+
+      <!-- Project 4: Observability Stack -->
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-accent" style="background: linear-gradient(90deg, #f46800, var(--green))"></div>
+          <div class="project-meta">
+            <div class="project-icon">📊</div>
+            <span class="project-status status-live">● Live</span>
+          </div>
+          <div class="project-name">Observability Stack</div>
+          <div class="project-tagline">Prometheus · Grafana · Loki · Promtail</div>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">
+            A complete metrics, logs, and alerting stack providing full visibility into
+            platform health. Prometheus collects time-series metrics from every cluster
+            component. Loki aggregates structured logs from all pods. Grafana unifies
+            both data sources into correlated dashboards for rapid root-cause analysis.
+          </p>
+
+          <div class="project-section-title">Architecture Highlights</div>
+          <ul class="highlights-list">
+            <li>Prometheus scrapes 15+ targets with automatic service discovery</li>
+            <li>Promtail DaemonSet ships logs from all nodes to Loki</li>
+            <li>Pre-built dashboards: cluster overview, node metrics, app health</li>
+            <li>AlertManager routes P1 alerts to email with 5-minute SLA</li>
+            <li>30-day retention with automated cleanup CronJobs</li>
+          </ul>
+
+          <div class="project-section-title">Technologies</div>
+          <div class="tech-stack">
+            <span class="tech-pill">Prometheus</span>
+            <span class="tech-pill">Grafana</span>
+            <span class="tech-pill">Loki</span>
+            <span class="tech-pill">Promtail</span>
+            <span class="tech-pill">AlertManager</span>
+            <span class="tech-pill">PromQL</span>
+          </div>
+        </div>
+        <div class="project-footer">
+          <a href="https://grafana.bvrinfra.in" target="_blank" class="project-link link-primary">↗ Grafana</a>
+          <a href="architecture.html" class="project-link link-secondary">Details</a>
+        </div>
+      </div>
+
+      <!-- Project 5: Portfolio Platform -->
+      <div class="project-card">
+        <div class="project-header">
+          <div class="project-accent" style="background: linear-gradient(90deg, var(--green), #00d4ff)"></div>
+          <div class="project-meta">
+            <div class="project-icon">🌐</div>
+            <span class="project-status status-live">● Live</span>
+          </div>
+          <div class="project-name">Portfolio Platform</div>
+          <div class="project-tagline">Static Site · Kubernetes · ArgoCD</div>
+        </div>
+        <div class="project-body">
+          <p class="project-desc">
+            This portfolio site is itself a demonstration of the platform: static HTML/CSS/JS
+            served from a Kubernetes deployment, delivered via Traefik ingress and Cloudflare
+            Tunnel, deployed automatically via ArgoCD on every git push, and monitored by
+            the same Prometheus/Grafana stack as all other workloads.
+          </p>
+
+          <div class="project-section-title">Architecture Highlights</div>
+          <ul class="highlights-list">
+            <li>Nginx container serving static assets from a Kubernetes Deployment</li>
+            <li>ArgoCD watches the GitHub repo and deploys on every commit</li>
+            <li>Traefik ingress with TLS via Cloudflare for bvrinfra.in</li>
+            <li>Live metrics widget fetches real Prometheus data via Metrics API</li>
+            <li>Zero-downtime rolling updates with readiness probe gating</li>
+          </ul>
+
+          <div class="project-section-title">Technologies</div>
+          <div class="tech-stack">
+            <span class="tech-pill">HTML/CSS/JS</span>
+            <span class="tech-pill">Nginx</span>
+            <span class="tech-pill">Docker</span>
+            <span class="tech-pill">Kubernetes</span>
+            <span class="tech-pill">ArgoCD</span>
+            <span class="tech-pill">Cloudflare</span>
+          </div>
+        </div>
+        <div class="project-footer">
+          <a href="https://bvrinfra.in" target="_blank" class="project-link link-primary">↗ Live Site</a>
+          <a href="https://github.com/ravikishore" target="_blank" class="project-link link-secondary">GitHub</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-copy">© 2025 B.V. Ravi Kishore · BVRINFRA Platform</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="architecture.html">Architecture</a>
+      <a href="resume.html">Resume</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('navToggle').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+</script>
+</body>
+</html>

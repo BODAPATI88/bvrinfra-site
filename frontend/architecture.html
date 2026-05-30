@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecture — BVRINFRA</title>
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    .page-hero {
+      padding: 72px 0 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Diagram ─────────────────────────────────────────────── */
+    .diagram-wrapper {
+      margin: 48px 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .diagram-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface2);
+    }
+
+    .diagram-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .diagram-title-bar {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-left: 8px;
+    }
+
+    .diagram-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── Component Grid ──────────────────────────────────────── */
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .component-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: all .3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .component-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent, var(--cyan));
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .component-card:hover {
+      border-color: var(--border2);
+      transform: translateY(-3px);
+    }
+
+    .component-card:hover::after { opacity: 1; }
+
+    .comp-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .comp-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .comp-role {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent, var(--cyan));
+      margin-bottom: 14px;
+    }
+
+    .comp-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .comp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .comp-tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(255,255,255,.04);
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+    }
+
+    /* ── Flow Diagram ────────────────────────────────────────── */
+    .flow-section {
+      margin-top: 72px;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 40px;
+    }
+
+    .flow-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+    }
+
+    .flow-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .flow-step {
+      display: flex;
+      gap: 16px;
+      position: relative;
+    }
+
+    .flow-step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border2);
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--cyan-dim);
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--bg);
+      z-index: 1;
+    }
+
+    .step-content {
+      padding: 4px 0 24px;
+    }
+
+    .step-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .step-detail {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .flow-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo">BVR<span>INFRA</span></a>
+    <button class="nav-toggle" id="navToggle">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="architecture.html" class="active">Architecture</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="resume.html">Resume</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-status">Cluster: Healthy</div>
+  </div>
+</nav>
+
+<!-- ── Hero ──────────────────────────────────────────────────── -->
+<div class="page-hero">
+  <div class="container">
+    <div class="section-label">Platform Design</div>
+    <h1 class="section-title">Platform Architecture</h1>
+    <p class="section-desc" style="max-width:680px">
+      A resilient, observable, and GitOps-driven Kubernetes platform built on K3s.
+      Every layer is designed for production-grade reliability with automated operations
+      and real-time visibility into system health.
+    </p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
+      <span class="badge badge-green">● Resilient by Design</span>
+      <span class="badge badge-cyan">◉ Observable by Default</span>
+      <span class="badge badge-amber">⚙ Automated Operations</span>
+      <span class="badge badge-dim">⬡ GitOps Managed</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Architecture Diagram ───────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">Visual Overview</div>
+    <h2 class="section-title">Full Stack Diagram</h2>
+    <p class="section-desc">Complete platform topology showing all layers from user access through to backup &amp; recovery.</p>
+
+    <div class="diagram-wrapper">
+      <div class="diagram-header">
+        <div class="diagram-dot" style="background:#ff5f57"></div>
+        <div class="diagram-dot" style="background:#febc2e"></div>
+        <div class="diagram-dot" style="background:#28c840"></div>
+        <span class="diagram-title-bar">architecture-diagram.jpg — BVRINFRA Platform Architecture</span>
+      </div>
+      <img
+        src="assets/architecture-diagram.jpg"
+        alt="BVRINFRA Platform Architecture Diagram showing K3s Kubernetes cluster with ArgoCD GitOps, Traefik ingress, Prometheus/Grafana observability, and automated backup strategy"
+        class="diagram-img"
+        loading="lazy"
+      />
+    </div>
+
+    <!-- ── Component Deep-Dives ─────────────────────────────── -->
+    <div class="section-label">Component Breakdown</div>
+    <h2 class="section-title">Stack Components</h2>
+
+    <div class="component-grid">
+
+      <!-- K3s -->
+      <div class="component-card" style="--accent: var(--cyan)">
+        <div class="comp-icon">☸️</div>
+        <div class="comp-name">K3s Kubernetes</div>
+        <div class="comp-role">Container Orchestration</div>
+        <p class="comp-desc">
+          Lightweight, production-ready Kubernetes distribution from Rancher. Runs on
+          Proxmox VMs with a single control-plane node (k8s-master) and two worker nodes
+          (k8s-worker1 for workloads, k8s-worker2 as the observability node). K3s bundles
+          containerd, Flannel CNI, and etcd — eliminating heavy dependencies while
+          maintaining full K8s API compatibility.
+        </p>
+        <div class="comp-tags">
+          <span class="comp-tag">Control Plane</span>
+          <span class="comp-tag">etcd</span>
+          <span class="comp-tag">Flannel CNI</span>
+          <span class="comp-tag">containerd</span>
+          <span class="comp-tag">3-node cluster</span>
+        </div>
+      </div>
+
+      <!-- Traefik -->
+      <div class="component-card" style="--accent: var(--green)">
+        <div class="comp-icon">🦉</div>
+        <div class="comp-name">Traefik Ingress</div>
+        <div class="comp-role">Ingress Controller + Reverse Proxy</div>
+        <p class="comp-desc">
+          Cloud-native edge router serving as the Kubernetes ingress controller. Paired
+          with MetalLB for bare-metal load balancing, Traefik handles TLS termination,
+          routing rules, and automatic service discovery via Kubernetes IngressRoute CRDs.
+          Exposes all subdomains under bvrinfra.in through Cloudflare Tunnel for secure
+          remote access without open firewall ports.
+        </p>
+        <div class="comp-tags">
+          <span class="comp-tag">IngressRoute CRDs</span>
+          <span class="comp-tag">TLS Termination</span>
+          <span class="comp-tag">MetalLB</span>
+          <span class="comp-tag">Cloudflare Tunnel</span>
+        </div>
+      </div>
+
+      <!-- ArgoCD -->
+      <div class="component-card" style="--accent: var(--amber)">
+        <div class="comp-icon">🐙</div>
+        <div class="comp-name">ArgoCD</div>
+        <div class="comp-role">Continuous Delivery — GitOps Engine</div>
+        <p class="comp-desc">
+          Declarative GitOps tool that continuously reconciles the Kubernetes cluster state
+          with manifests stored in GitHub. Any git push triggers ArgoCD's sync loop: it
+          diffs the desired state in Git against the live cluster, applies only the delta,
+          and self-heals drift automatically. All platform resources — namespaces, deployments,
+          ConfigMaps, secrets — are version-controlled and auditable.
+        </p>
+        <div class="comp-tags">
+          <span class="comp-tag">App of Apps pattern</span>
+          <span class="comp-tag">Auto-sync</span>
+          <span class="comp-tag">Self-heal</span>
+          <span class="comp-tag">GitHub integration</span>
+          <span class="comp-tag">Drift detection</span>
+        </div>
+      </div>
+
+      <!-- Prometheus -->
+      <div class="component-card" style="--accent: #e6522c">
+        <div class="comp-icon">🔥</div>
+        <div class="comp-name">Prometheus</div>
+        <div class="comp-role">Metrics Collection &amp; Storage</div>
+        <p class="comp-desc">
+          Time-series metrics engine deployed on k8s-worker2 (the dedicated observability
+          node). Scrapes metrics from all Kubernetes nodes, pods, and services via service
+          discovery and kube-state-metrics. AlertManager processes alert rules and routes
+          notifications. Retention is configured for 30 days with automated cleanup jobs
+          preventing unbounded disk growth.
+        </p>
+        <div class="comp-tags">
+          <span class="comp-tag">Node Exporter</span>
+          <span class="comp-tag">kube-state-metrics</span>
+          <span class="comp-tag">AlertManager</span>
+          <span class="comp-tag">30d retention</span>
+        </div>
+      </div>
+
+      <!-- Grafana -->
+      <div class="component-card" style="--accent: #f46800">
+        <div class="comp-icon">📊</div>
+        <div class="comp-name">Grafana</div>
+        <div class="comp-role">Observability Visualisation</div>
+        <p class="comp-desc">
+          Unified dashboarding layer pulling from both Prometheus (metrics) and Loki (logs).
+          Pre-provisioned dashboards for Kubernetes cluster overview, node resource usage,
+          pod lifecycle, and application performance. Accessible externally at
+          grafana.bvrinfra.in with role-based access control. Alerting configured for
+          resource threshold breaches and pod crash loops.
+        </p>
+        <div class="comp-tags">
+          <span class="comp-tag">Prometheus datasource</span>
+          <span class="comp-tag">Loki datasource</span>
+          <span class="comp-tag">RBAC</span>
+          <span class="comp-tag">Pre-built dashboards</span>
+          <span class="comp-tag">Alert rules</span>
+        </div>
+      </div>
+
+      <!-- Loki + Promtail -->
+      <div class="component-card" style="--accent: var(--cyan)">
+        <div class="comp-icon">📋</div>
+        <div class="comp-name">Loki + Promtail</div>
+        <div class="comp-role">Log Aggregation Pipeline</div>
+        <p class="comp-desc">
+          Grafana Loki provides horizontally scalable, multi-tenant log aggregation without
+          full-text indexing — storing only labels and compressed log chunks for
+          cost efficiency. Promtail is the agent deployed as a DaemonSet on every node,
+          tailing container logs and pushing them to Loki with Kubernetes metadata labels
+          (namespace, pod, container) for powerful log correlation with traces.
+        </p>
+        <div class="comp-tags">
+          <span class="comp-tag">DaemonSet agent</span>
+          <span class="comp-tag">Label-based index</span>
+          <span class="comp-tag">Grafana integration</span>
+          <span class="comp-tag">LogQL queries</span>
+        </div>
+      </div>
+
+      <!-- GitOps Workflow -->
+      <div class="component-card" style="--accent: var(--green)">
+        <div class="comp-icon">🔄</div>
+        <div class="comp-name">GitOps Workflow</div>
+        <div class="comp-role">Deployment Pipeline</div>
+        <p class="comp-desc">
+          All infrastructure changes flow through Git. The workflow: developer commits YAML
+          manifests → GitHub webhook notifies ArgoCD → ArgoCD syncs to cluster → health
+          checks verify rollout → Prometheus/Grafana validate metrics post-deploy. Rollback
+          is a single <code style="background:var(--surface2);padding:1px 6px;border-radius:3px;color:var(--cyan)">git revert</code> commit.
+          No manual kubectl applies in production — every change is auditable and reversible.
+        </p>
+        <div class="comp-tags">
+          <span class="comp-tag">GitHub source of truth</span>
+          <span class="comp-tag">Declarative config</span>
+          <span class="comp-tag">Git revert rollback</span>
+          <span class="comp-tag">Audit trail</span>
+        </div>
+      </div>
+
+      <!-- Backup Strategy -->
+      <div class="component-card" style="--accent: var(--amber)">
+        <div class="comp-icon">🔐</div>
+        <div class="comp-name">Backup Strategy</div>
+        <div class="comp-role">Disaster Recovery &amp; Data Protection</div>
+        <p class="comp-desc">
+          Four-layer backup approach: (1) <strong style="color:#fff">K3s State DB</strong> — etcd snapshots
+          preserving cluster state; (2) <strong style="color:#fff">Manifests Backup</strong> — all K8s resource
+          definitions; (3) <strong style="color:#fff">Infra Git Backup</strong> — configuration history;
+          (4) <strong style="color:#fff">Encrypted Off-Cluster</strong> — AES-encrypted backups to external
+          storage. Automated retention policies and cleanup jobs run on schedule via CronJobs.
+        </p>
+        <div class="comp-tags">
+          <span class="comp-tag">etcd snapshots</span>
+          <span class="comp-tag">AES encryption</span>
+          <span class="comp-tag">Off-cluster storage</span>
+          <span class="comp-tag">CronJob automation</span>
+          <span class="comp-tag">Retention policies</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Workflow Flows ─────────────────────────────────────────── -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="flow-section">
+      <div class="section-label">Operations</div>
+      <h2 class="section-title">Key Workflows</h2>
+
+      <div class="flow-grid">
+
+        <div class="flow-box">
+          <div class="flow-title">🔄 GitOps Deployment Flow</div>
+          <div class="flow-steps">
+            <div class="flow-step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-name">Code Push</div>
+                <div class="step-detail">Engineer commits Kubernetes manifests or Helm values to the GitHub repository.</div>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-name">ArgoCD Sync Trigger</div>
+                <div class="step-detail">ArgoCD detects the new commit via polling or webhook and begins diff calculation.</div>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-name">Cluster Reconciliation</div>
+                <div class="step-detail">Only the changed resources are applied. ArgoCD shows each resource's health status in real time.</div>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-name">Health Verification</div>
+                <div class="step-detail">Kubernetes liveness/readiness probes confirm workload health. AlertManager fires if thresholds breach.</div>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-num" style="border-color:var(--green);color:var(--green)">✓</div>
+              <div class="step-content">
+                <div class="step-name" style="color:var(--green)">Healthy &amp; Synced</div>
+                <div class="step-detail">Grafana metrics confirm nominal operation. Change recorded in Git history.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-box">
+          <div class="flow-title">🔍 Observability Pipeline</div>
+          <div class="flow-steps">
+            <div class="flow-step">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-name">Metrics Collection</div>
+                <div class="step-detail">Node Exporter and kube-state-metrics expose endpoints. Prometheus scrapes every 15s.</div>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-name">Log Shipping</div>
+                <div class="step-detail">Promtail DaemonSet tails all container logs and ships to Loki with K8s metadata labels.</div>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-name">Storage &amp; Indexing</div>
+                <div class="step-detail">Prometheus TSDB stores metrics with 30d retention. Loki indexes only labels, compresses chunks.</div>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-name">Visualisation</div>
+                <div class="step-detail">Grafana renders unified dashboards with correlated metrics and logs for rapid root-cause analysis.</div>
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-num" style="border-color:var(--amber);color:var(--amber)">!</div>
+              <div class="step-content">
+                <div class="step-name" style="color:var(--amber)">Alert &amp; Respond</div>
+                <div class="step-detail">AlertManager routes threshold breaches to notification channels. Incident workflow begins.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-copy">© 2025 B.V. Ravi Kishore · BVRINFRA Platform</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="resume.html">Resume</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('navToggle').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+</script>
+</body>
+</html>
