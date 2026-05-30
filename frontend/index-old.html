@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BVRInfra — Platform Engineering</title>
+  <meta name="description" content="Ravi Kishore · Senior System Engineer · Cloud, VMware, Kubernetes" />
+  <link rel="stylesheet" href="main.css" />
+</head>
+<body>
+
+  <!-- ══════════════ HEADER ══════════════ -->
+  <header>
+    <nav class="container">
+      <div class="nav-brand">BVR<span>infra</span>.in</div>
+
+      <ul class="nav-links">
+        <li><a href="#metrics">Cluster</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#dashboards">Dashboards</a></li>
+      </ul>
+
+      <div class="nav-status">
+        <div class="pulse-dot" id="nav-dot"></div>
+        <span id="nav-status-text">CONNECTING</span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-label">Platform Engineering Portfolio</div>
+
+      <div class="hero-grid">
+        <div>
+          <h1 class="hero-name">Ravi<br>Kishore</h1>
+          <p class="hero-title">Senior System Engineer</p>
+          <div class="hero-tags">
+            <span class="tag">Cloud</span>
+            <span class="tag">VMware</span>
+            <span class="tag">Windows Server</span>
+            <span class="tag">Kubernetes</span>
+          </div>
+        </div>
+
+        <div>
+          <p style="font-size:13px; color:var(--text-1); line-height:1.8; margin-bottom:20px;">
+            Infrastructure engineer focused on building reliable, observable
+            platforms. This homelab runs a production-grade K3s cluster with
+            GitOps delivery via ArgoCD, full metrics ingestion through
+            Prometheus, and visualisation in Grafana — all self-hosted at
+            <span style="color:var(--cyan)">bvrinfra.in</span>.
+          </p>
+          <div class="hero-tags">
+            <span class="tag" style="border-color:var(--cyan-dim); color:var(--cyan);">K3s Cluster</span>
+            <span class="tag" style="border-color:var(--cyan-dim); color:var(--cyan);">GitOps</span>
+            <span class="tag" style="border-color:var(--cyan-dim); color:var(--cyan);">Observability</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ LIVE METRICS ══════════════ -->
+  <section id="metrics">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">// live telemetry</div>
+        <h2 class="section-title">Cluster Health</h2>
+      </div>
+
+      <!-- Error banner -->
+      <div class="api-error-banner" id="api-error-banner">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="api-error-msg">Unable to reach metrics API.</span>
+      </div>
+
+      <!-- Cards -->
+      <div class="metrics-grid">
+
+        <!-- Status -->
+        <div class="metric-card status-card" id="metric-status-card">
+          <div class="metric-key">Cluster Status</div>
+          <div class="metric-val loading" id="metric-status">—</div>
+          <div class="metric-unit">api.bvrinfra.in</div>
+        </div>
+
+        <!-- Nodes -->
+        <div class="metric-card">
+          <div class="metric-key">Nodes</div>
+          <div class="metric-val loading" id="metric-nodes">—</div>
+          <div class="metric-unit">active nodes</div>
+        </div>
+
+        <!-- Pods -->
+        <div class="metric-card">
+          <div class="metric-key">Pods</div>
+          <div class="metric-val loading" id="metric-pods">—</div>
+          <div class="metric-unit">running pods</div>
+        </div>
+
+        <!-- CPU -->
+        <div class="metric-card">
+          <div class="metric-key">CPU Usage</div>
+          <div class="metric-val loading" id="metric-cpu">—</div>
+          <div class="metric-unit">percent (%)</div>
+        </div>
+
+        <!-- Memory -->
+        <div class="metric-card">
+          <div class="metric-key">Memory Usage</div>
+          <div class="metric-val loading" id="metric-memory">—</div>
+          <div class="metric-unit">percent (%)</div>
+        </div>
+
+      </div>
+
+      <!-- Footer bar -->
+      <div class="metrics-footer">
+        <span id="last-refresh">Fetching…</span>
+        <div class="refresh-indicator">
+          <span>next refresh</span>
+          <div class="refresh-bar">
+            <div class="refresh-bar-fill" id="refresh-bar-fill" style="width:0%"></div>
+          </div>
+          <span>15s</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════ SKILLS ══════════════ -->
+  <section id="skills">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">// competencies</div>
+        <h2 class="section-title">Technical Skills</h2>
+      </div>
+
+      <div class="skills-grid">
+
+        <div class="skill-item">
+          <div class="skill-icon">☁️</div>
+          <div class="skill-name">Azure</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">🖥️</div>
+          <div class="skill-name">VMware</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">🪟</div>
+          <div class="skill-name">Windows Server</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">⎈</div>
+          <div class="skill-name">Kubernetes</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">🐳</div>
+          <div class="skill-name">Docker</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">🔄</div>
+          <div class="skill-name">ArgoCD</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">🏗️</div>
+          <div class="skill-name">Terraform</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">📡</div>
+          <div class="skill-name">Prometheus</div>
+        </div>
+
+        <div class="skill-item">
+          <div class="skill-icon">📊</div>
+          <div class="skill-name">Grafana</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ ARCHITECTURE ══════════════ -->
+  <section id="architecture">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">// homelab stack</div>
+        <h2 class="section-title">Platform Architecture</h2>
+      </div>
+
+      <div class="arch-grid">
+
+        <div class="arch-card" data-index="01">
+          <div class="arch-badge">Compute</div>
+          <div class="arch-name">K3s Cluster</div>
+          <div class="arch-desc">Lightweight Kubernetes distribution. Control plane + worker nodes running on Proxmox VMs.</div>
+        </div>
+
+        <div class="arch-card" data-index="02">
+          <div class="arch-badge">Ingress</div>
+          <div class="arch-name">Traefik</div>
+          <div class="arch-desc">Ingress controller handling all HTTP/HTTPS routing, TLS termination, and middleware chains.</div>
+        </div>
+
+        <div class="arch-card" data-index="03">
+          <div class="arch-badge">GitOps</div>
+          <div class="arch-name">ArgoCD</div>
+          <div class="arch-desc">Continuous deployment from Git. Declarative application state, automated sync and reconciliation.</div>
+        </div>
+
+        <div class="arch-card" data-index="04">
+          <div class="arch-badge">Metrics</div>
+          <div class="arch-name">Prometheus</div>
+          <div class="arch-desc">Metrics scraping and storage. kube-state-metrics + node-exporter for full cluster visibility.</div>
+        </div>
+
+        <div class="arch-card" data-index="05">
+          <div class="arch-badge">Visualisation</div>
+          <div class="arch-name">Grafana</div>
+          <div class="arch-desc">Dashboards for cluster, node, and application metrics sourced from Prometheus.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ DASHBOARDS ══════════════ -->
+  <section id="dashboards">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">// live access</div>
+        <h2 class="section-title">Platform Dashboards</h2>
+      </div>
+
+      <div class="dash-grid">
+
+        <a class="dash-link" href="https://platform.bvrinfra.in" target="_blank" rel="noopener">
+          <div class="dash-link-info">
+            <div class="dash-link-title">Platform Portal</div>
+            <div class="dash-link-url">platform.bvrinfra.in</div>
+          </div>
+          <div class="dash-arrow">→</div>
+        </a>
+
+        <a class="dash-link" href="https://argocd.bvrinfra.in" target="_blank" rel="noopener">
+          <div class="dash-link-info">
+            <div class="dash-link-title">ArgoCD</div>
+            <div class="dash-link-url">argocd.bvrinfra.in</div>
+          </div>
+          <div class="dash-arrow">→</div>
+        </a>
+
+        <a class="dash-link" href="https://newgrafana.bvrinfra.in" target="_blank" rel="noopener">
+          <div class="dash-link-info">
+            <div class="dash-link-title">Grafana</div>
+            <div class="dash-link-url">newgrafana.bvrinfra.in</div>
+          </div>
+          <div class="dash-arrow">→</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ FOOTER ══════════════ -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span><span class="footer-brand">BVRInfra</span> · Ravi Kishore · Senior System Engineer</span>
+        <span>bvrinfra.in · K3s · Traefik · ArgoCD · Prometheus · Grafana</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
