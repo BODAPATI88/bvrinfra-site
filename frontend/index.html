@@ -527,7 +527,7 @@
           <div class="evidence-grid">
 
             <div class="evidence-card" role="button" tabindex="0"
-                 data-src="screenshots/proxmox.jpg"
+                 data-evidence-src="screenshots/proxmox.jpg"
                  data-alt="Proxmox Infrastructure — 3-VM cluster view"
                  aria-label="Enlarge Proxmox Infrastructure screenshot">
               <div class="evidence-img-wrap">
@@ -547,7 +547,7 @@
             </div>
 
             <div class="evidence-card" role="button" tabindex="0"
-                 data-src="screenshots/kubernetes.jpg"
+                 data-evidence-src="screenshots/kubernetes.jpg"
                  data-alt="Kubernetes Cluster — all nodes ready"
                  aria-label="Enlarge Kubernetes Cluster screenshot">
               <div class="evidence-img-wrap">
@@ -567,7 +567,7 @@
             </div>
 
             <div class="evidence-card" role="button" tabindex="0"
-                 data-src="screenshots/argocd.jpg"
+                 data-evidence-src="screenshots/argocd.jpg"
                  data-alt="ArgoCD GitOps — applications synced"
                  aria-label="Enlarge ArgoCD screenshot">
               <div class="evidence-img-wrap">
@@ -587,7 +587,7 @@
             </div>
 
             <div class="evidence-card" role="button" tabindex="0"
-                 data-src="screenshots/grafana.jpg"
+                 data-evidence-src="screenshots/grafana.jpg"
                  data-alt="Grafana Monitoring — live cluster metrics"
                  aria-label="Enlarge Grafana screenshot">
               <div class="evidence-img-wrap">
@@ -970,7 +970,7 @@
               </div>
             </div>
             <ul class="resume-bullets">
-              <li>B.Tech / B.E. — Computer Science / IT</li>
+              <li>Bachelor of Technology (Electronics & Communication Engineering)</li>
               <li>CKA (Certified Kubernetes Administrator) — in progress</li>
               <li>Azure Fundamentals · Cloudflare Zero Trust (hands-on)</li>
             </ul>
@@ -1085,19 +1085,19 @@
        Reusable modal for evidence card screenshots.
        src/alt injected by JS — no image hardcoded here.
   ──────────────────────────────────────────────────────────── -->
-  <div class="arch-modal" id="ev-modal" role="dialog" aria-modal="true" aria-labelledby="ev-modal-label">
-    <div class="arch-modal-backdrop" id="ev-modal-backdrop"></div>
+  <div class="arch-modal" id="evidence-modal" role="dialog" aria-modal="true" aria-labelledby="evidence-modal-label">
+    <div class="arch-modal-backdrop" id="evidence-modal-backdrop"></div>
     <div class="arch-modal-inner">
-      <button class="arch-modal-close" id="ev-modal-close" aria-label="Close screenshot">
+      <button class="arch-modal-close" id="evidence-modal-close" aria-label="Close screenshot">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
           <line x1="18" y1="6" x2="6" y2="18"/>
           <line x1="6"  y1="6" x2="18" y2="18"/>
         </svg>
       </button>
       <div class="arch-modal-scroll">
-        <img src="" alt="" class="arch-modal-img" id="ev-modal-img" loading="lazy" decoding="async" />
+        <img src="" alt="" class="arch-modal-img" id="evidence-modal-img" loading="lazy" decoding="async" />
       </div>
-      <p class="arch-modal-hint" id="ev-modal-label">Pinch to zoom · Scroll to pan · Esc to close</p>
+      <p class="arch-modal-hint" id="evidence-modal-label">Pinch to zoom · Scroll to pan · Esc to close</p>
     </div>
   </div>
 
