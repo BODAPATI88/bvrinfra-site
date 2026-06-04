@@ -598,3 +598,67 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--cyan); outline-
   }
 }
 
+.qr-card{
+  margin:24px auto;
+  max-width:280px;
+  text-align:center;
+  padding:20px;
+  border:1px solid var(--border-hi);
+  border-radius:16px;
+  background:var(--bg-2);
+}
+
+.qr-image{
+  width:180px;
+  height:auto;
+  display:block;
+  margin:0 auto 12px;
+}
+
+.qr-title{
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.qr-subtitle{
+  color:var(--text-1);
+  font-size:12px;
+  word-break:break-word;
+}
+
+@media (max-width:768px){
+  .qr-image{
+    width:150px;
+  }
+}
+
+.qr-card{
+  margin:32px auto 0;
+  max-width:240px;
+  text-align:center;
+  padding:20px;
+  background:var(--bg-2);
+  border:1px solid var(--border);
+  border-radius:16px;
+}
+
+.qr-image{
+  width:160px;
+  height:160px;
+  display:block;
+  margin:0 auto 12px;
+  border-radius:10px;
+  background:#fff;
+}
+
+.qr-title{
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.qr-subtitle{
+  font-size:12px;
+  color:var(--text-2);
+  word-break:break-word;
+}
+
