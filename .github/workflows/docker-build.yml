@@ -40,6 +40,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: BODAPATI88/infra-git
+          ref: feature/live-k8s-api
+          ref: feature/live-k8s-api
           token: ${{ secrets.INFRA_REPO_TOKEN }}
           path: infra-repo
 
