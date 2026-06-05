@@ -39,7 +39,7 @@ jobs:
       - name: Checkout Infra Repo
         uses: actions/checkout@v4
         with:
-          repository: BODAPATI88/infra-homelab
+          repository: BODAPATI88/infra-git
           token: ${{ secrets.INFRA_REPO_TOKEN }}
           path: infra-repo
 
