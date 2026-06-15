@@ -1,7 +1,7 @@
 services:
   bvrinfra:
     image: bvrinfra-site:v1
-      container_name: bvrinfra-site
-      restart: unless-stopped
-      ports:
-        - "80:80"
+    container_name: bvrinfra-site
+    restart: unless-stopped
+    ports:
+      - "80:80"
