@@ -1,31 +1,41 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+.npm
+.eslintcache
 
-# temp artifacts
-*.tar
-exporting
-naming
-unpacking
-kubectl
-grep
-exit
-=
+# Build
+dist/
+build/
+.next/
+out/
+.cache/
 
-# Archives
-*.tar
-*.tar.gz
-*.tgz
-*.zip
-
-# Backup files
-*.bak
-*.tmp
+# Environment
+.env
+.env.local
+.env.*.local
+.env.production.local
 
 # IDE
 .vscode/
 .idea/
-
-# OS
+*.swp
+*.swo
+*~
 .DS_Store
 
-# Python
-__pycache__/
-*.pyc
+# Testing
+coverage/
+.nyc_output/
+.jest-cache/
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Temporary
+*.tmp
+.tmp/
